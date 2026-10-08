@@ -71,7 +71,27 @@ st.markdown("""
         outline: none !important;
         box-shadow: none !important;
     }
-    
+
+    /* Keep Streamlit buttons readable if the deployed theme falls back to defaults. */
+    [data-testid="stButton"] button,
+    [data-testid="stFormSubmitButton"] button {
+        background: #FFFFFF !important;
+        border: 1px solid #0284C7 !important;
+        color: #0F172A !important;
+    }
+    [data-testid="stButton"] button *,
+    [data-testid="stFormSubmitButton"] button * {
+        color: inherit !important;
+    }
+    [data-testid="stButton"] button[kind="primary"],
+    [data-testid="stButton"] button[data-testid="baseButton-primary"],
+    [data-testid="stFormSubmitButton"] button[kind="primary"],
+    [data-testid="stFormSubmitButton"] button[data-testid="baseButton-primary"] {
+        background: #0284C7 !important;
+        border-color: #0284C7 !important;
+        color: #FFFFFF !important;
+    }
+
     div[data-baseweb="popover"], ul[role="listbox"] {
         background-color: #FAF6EE !important;
         border: 1px solid #CBD5E1 !important;
@@ -200,12 +220,19 @@ st.markdown("""
         border: 2px solid #0284C7;
     }
     .stTabs [data-baseweb="tab"] {
-        border-radius: 8px;
+        background-color: #FFFFFF !important;
+        border: 1px solid #0284C7 !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
         color: #0F172A !important;
         font-weight: 600 !important;
         padding: 8px 20px;
     }
-    .stTabs [aria-selected="true"] {
+    .stTabs [data-baseweb="tab"]:focus {
+        outline: 2px solid #0284C7 !important;
+        outline-offset: 2px !important;
+    }
+    .stTabs [data-baseweb="tab"][aria-selected="true"] {
         background-color: #FAF6EE !important;
         color: #0284C7 !important;
         font-weight: 800 !important;
