@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.db.database import engine, Base
@@ -7,6 +9,9 @@ from backend.app.routers import emergency, dispatch, hospital, vitals
 # Auto-initialize database tables and seed data
 Base.metadata.create_all(bind=engine)
 seed_database()
+
+HOST = os.getenv("HOST", "127.0.0.1")
+PORT = int(os.getenv("PORT", "8000"))
 
 app = FastAPI(
     title="AI-Powered Emergency Healthcare Command Centre API",
@@ -39,4 +44,4 @@ def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("backend.app.main:app", host=HOST, port=PORT, reload=False)

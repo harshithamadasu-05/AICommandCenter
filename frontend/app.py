@@ -10,7 +10,7 @@ import os
 import base64
 from datetime import datetime
 
-API_BASE_URL = "http://127.0.0.1:8000/api"
+API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000/api")
 
 st.set_page_config(
     page_title="AI Emergency Healthcare Command Centre",
