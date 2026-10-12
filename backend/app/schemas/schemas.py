@@ -54,7 +54,21 @@ class EmergencyCreate(BaseModel):
     severe_bleeding: bool = False
     systolic_bp: Optional[int] = 120
     heart_rate: Optional[int] = 80
+    accident_severity: Optional[str] = "Critical"
     notes: Optional[str] = None
+
+class EmergencyUpdate(BaseModel):
+    patient_name: Optional[str] = None
+    patient_age: Optional[int] = None
+    emergency_type: Optional[str] = None
+    priority: Optional[str] = None
+    accident_severity: Optional[str] = None
+    priority_score: Optional[float] = None
+    address: Optional[str] = None
+    notes: Optional[str] = None
+    status: Optional[str] = None
+    recommended_hospital_id: Optional[int] = None
+    assigned_ambulance_id: Optional[int] = None
 
 class EmergencyOut(BaseModel):
     id: int
@@ -63,6 +77,7 @@ class EmergencyOut(BaseModel):
     emergency_type: str
     priority: str
     priority_score: float
+    accident_severity: Optional[str] = "Critical"
     location_lat: float
     location_lon: float
     address: str
@@ -71,6 +86,8 @@ class EmergencyOut(BaseModel):
     notes: Optional[str] = None
     assigned_ambulance_id: Optional[int] = None
     recommended_hospital_id: Optional[int] = None
+    assigned_ambulance_call_sign: Optional[str] = None
+    recommended_hospital_name: Optional[str] = None
 
     class Config:
         from_attributes = True

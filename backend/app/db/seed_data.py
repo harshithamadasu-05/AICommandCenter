@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 from backend.app.db.models import Hospital, Ambulance, EmergencyCase, PatientVital
-from backend.app.db.database import SessionLocal, engine, Base
+from backend.app.db.database import SessionLocal, engine, ensure_schema
 import random
 
 def seed_database(db: Session = None):
-    Base.metadata.create_all(bind=engine)
+    ensure_schema(bind=engine)
     
     close_session = False
     if db is None:
@@ -12,20 +12,17 @@ def seed_database(db: Session = None):
         close_session = True
 
     try:
-        # Check if already seeded with cases
-        if db.query(EmergencyCase).count() >= 4:
-            print("Database already contains multiple emergency cases. Skipping seed.")
+        if (
+            db.query(Hospital).first()
+            or db.query(Ambulance).first()
+            or db.query(EmergencyCase).first()
+        ):
+            print("Database already contains data. Skipping seed.")
             return
 
         print("Seeding database with default Hospitals, Ambulances, and 4 Emergency Cases...")
 
-        # 1. Clear & Seed Hospitals
-        db.query(PatientVital).delete()
-        db.query(EmergencyCase).delete()
-        db.query(Ambulance).delete()
-        db.query(Hospital).delete()
-        db.commit()
-
+        # 1. Seed Hospitals
         hospitals_data = [
             {
                 "name": "Apollo Emergency Healthcare Centre",
@@ -97,12 +94,13 @@ def seed_database(db: Session = None):
 
         db.commit()
 
-        # 3. Seed 4 Emergency Cases
+        # 3. Seed 5 Emergency Cases (Critical, Mild, Minor accidents & emergencies)
         c1 = EmergencyCase(
             patient_name="Ravi Kumar",
             patient_age=48,
             emergency_type="Heart Attack",
             priority="CRITICAL",
+            accident_severity="Critical",
             priority_score=95.0,
             location_lat=17.4400,
             location_lon=78.4450,
@@ -118,6 +116,7 @@ def seed_database(db: Session = None):
             patient_age=62,
             emergency_type="Stroke",
             priority="CRITICAL",
+            accident_severity="Critical",
             priority_score=92.0,
             location_lat=17.4200,
             location_lon=78.4520,
@@ -131,8 +130,9 @@ def seed_database(db: Session = None):
         c3 = EmergencyCase(
             patient_name="Vikram Singh",
             patient_age=34,
-            emergency_type="Road Accident",
+            emergency_type="Road Accident (Critical Trauma)",
             priority="CRITICAL",
+            accident_severity="Critical",
             priority_score=96.0,
             location_lat=17.4520,
             location_lon=78.4920,
@@ -144,33 +144,51 @@ def seed_database(db: Session = None):
         )
 
         c4 = EmergencyCase(
-            patient_name="Ananya Roy",
-            patient_age=29,
-            emergency_type="Severe Respiratory Distress",
-            priority="HIGH",
-            priority_score=84.0,
-            location_lat=17.4310,
-            location_lon=78.4700,
-            address="Cyber Towers Metro Concourse",
-            status="REPORTED",
-            notes="Severe status asthmaticus attack. Shortness of breath, wheezing, SpO2 88%.",
+            patient_name="Rahul Verma",
+            patient_age=31,
+            emergency_type="Road Accident (Mild Collision)",
+            priority="MODERATE",
+            accident_severity="Mild",
+            priority_score=64.0,
+            location_lat=17.4350,
+            location_lon=78.4600,
+            address="Banjara Hills Road No. 12",
+            status="DISPATCHED",
+            notes="Car bumper collision. Isolated forearm fracture and superficial cuts. Hemodynamically stable.",
             assigned_ambulance_id=4,
-            recommended_hospital_id=3
+            recommended_hospital_id=2
         )
 
-        db.add_all([c1, c2, c3, c4])
+        c5 = EmergencyCase(
+            patient_name="Sneha Patel",
+            patient_age=24,
+            emergency_type="Road Accident (Minor Skid)",
+            priority="LOW",
+            accident_severity="Minor",
+            priority_score=36.0,
+            location_lat=17.4480,
+            location_lon=78.4810,
+            address="Begumpet Flyover North Ramp",
+            status="REPORTED",
+            notes="Low-speed scooter skid on wet pavement. Minor ankle sprain and contusion. Ambulatory.",
+            assigned_ambulance_id=None,
+            recommended_hospital_id=None
+        )
+
+        db.add_all([c1, c2, c3, c4, c5])
         db.commit()
 
         # Seed Initial Telemetry Vitals for Each Case
         v1 = PatientVital(emergency_id=c1.id, heart_rate=128, spo2=92, systolic_bp=165, diastolic_bp=98, temperature=37.1, ecg_status="ST_ELEVATION")
         v2 = PatientVital(emergency_id=c2.id, heart_rate=98, spo2=94, systolic_bp=185, diastolic_bp=110, temperature=36.8, ecg_status="NORMAL")
         v3 = PatientVital(emergency_id=c3.id, heart_rate=142, spo2=89, systolic_bp=88, diastolic_bp=56, temperature=36.4, ecg_status="CRITICAL_ALERT")
-        v4 = PatientVital(emergency_id=c4.id, heart_rate=115, spo2=88, systolic_bp=132, diastolic_bp=84, temperature=37.2, ecg_status="NORMAL")
+        v4 = PatientVital(emergency_id=c4.id, heart_rate=88, spo2=98, systolic_bp=122, diastolic_bp=78, temperature=36.7, ecg_status="NORMAL")
+        v5 = PatientVital(emergency_id=c5.id, heart_rate=76, spo2=99, systolic_bp=118, diastolic_bp=76, temperature=36.6, ecg_status="NORMAL")
 
-        db.add_all([v1, v2, v3, v4])
+        db.add_all([v1, v2, v3, v4, v5])
         db.commit()
 
-        print("Database successfully seeded with 4 active emergency cases!")
+        print("Database successfully seeded with 5 active emergency cases (Critical, Mild, Minor)!")
 
     finally:
         if close_session:

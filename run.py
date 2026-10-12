@@ -9,7 +9,7 @@ def start_backend():
     env = os.environ.copy()
     env["PYTHONPATH"] = os.path.abspath(os.path.dirname(__file__))
     subprocess.run(
-        [sys.executable, "-m", "uvicorn", "backend.app.main:app", "--host", "127.0.0.1", "--port", "8000"],
+        [sys.executable, "-m", "uvicorn", "backend.app.main:app", "--host", "127.0.0.1", "--port", "8000", "--reload-dir", "backend"],
         cwd=os.path.abspath(os.path.dirname(__file__)),
         env=env
     )

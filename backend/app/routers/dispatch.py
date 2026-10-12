@@ -4,11 +4,15 @@ from typing import List, Dict
 
 from backend.app.db.database import get_db
 from backend.app.db.models import EmergencyCase, Ambulance, Hospital
-from backend.app.schemas.schemas import HospitalRecommendation, EmergencyOut
+from backend.app.schemas.schemas import HospitalRecommendation, EmergencyOut, AmbulanceOut
 from backend.app.ai_engines.hospital_recommender import recommend_hospitals
 from backend.app.ai_engines.route_optimizer import find_nearest_ambulance, haversine_distance, calculate_eta
 
 router = APIRouter(prefix="/api/dispatch", tags=["Dispatch & Routing"])
+
+@router.get("/ambulances", response_model=List[AmbulanceOut])
+def list_ambulances(db: Session = Depends(get_db)):
+    return db.query(Ambulance).all()
 
 @router.get("/recommend_hospital/{emergency_id}", response_model=List[HospitalRecommendation])
 def get_hospital_recommendations(emergency_id: int, db: Session = Depends(get_db)):
@@ -73,7 +77,8 @@ def auto_dispatch(emergency_id: int, hospital_id: int = None, db: Session = Depe
     if not hospital_id:
         recs = get_hospital_recommendations(emergency_id, db)
         if recs:
-            hospital_id = recs[0].hospital_id
+            top_rec = recs[0]
+            hospital_id = top_rec["hospital_id"] if isinstance(top_rec, dict) else getattr(top_rec, "hospital_id", None)
 
     assigned_hospital = db.query(Hospital).filter(Hospital.id == hospital_id).first() if hospital_id else None
 
@@ -84,6 +89,10 @@ def auto_dispatch(emergency_id: int, hospital_id: int = None, db: Session = Depe
 
     # Update Ambulance Record
     assigned_ambulance.status = "DISPATCHED"
+
+    # Decrement Hospital ICU Bed if available
+    if assigned_hospital and assigned_hospital.icu_beds_available > 0:
+        assigned_hospital.icu_beds_available -= 1
 
     db.commit()
     db.refresh(emg)

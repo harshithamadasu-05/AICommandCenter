@@ -47,6 +47,7 @@ class EmergencyCase(Base):
     location_lon = Column(Float, nullable=False)
     address = Column(String, default="In Transit / GPS Location")
     status = Column(String, default="REPORTED")      # REPORTED, DISPATCHED, IN_TRANSIT, ARRIVED, RESOLVED
+    accident_severity = Column(String, default="Critical") # Critical, Mild, Minor
     created_at = Column(DateTime, default=datetime.utcnow)
     notes = Column(Text, nullable=True)
 
@@ -56,6 +57,14 @@ class EmergencyCase(Base):
     assigned_ambulance = relationship("Ambulance", back_populates="emergencies")
     recommended_hospital = relationship("Hospital", back_populates="emergencies")
     vitals = relationship("PatientVital", back_populates="emergency", cascade="all, delete-orphan")
+
+    @property
+    def assigned_ambulance_call_sign(self):
+        return self.assigned_ambulance.call_sign if self.assigned_ambulance else "Pending Ambulance"
+
+    @property
+    def recommended_hospital_name(self):
+        return self.recommended_hospital.name if self.recommended_hospital else "Pending Hospital Allotment"
 
 class PatientVital(Base):
     __tablename__ = "patient_vitals"
