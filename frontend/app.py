@@ -53,23 +53,41 @@ st.markdown("""
         color: #0F172A !important;
     }
 
-    /* Input Containers & Typer Bars */
-    div[data-baseweb="select"] > div, 
+    /* Crisp White Input Containers, Selects & Typer Bars */
+    div[data-baseweb="select"],
+    div[data-baseweb="select"] *,
+    div[data-baseweb="select"] > div,
+    div[data-baseweb="select"] > div > div,
+    div[data-baseweb="input"],
+    div[data-baseweb="input"] *,
     div[data-baseweb="input"] > div,
+    div[data-baseweb="textarea"],
+    div[data-baseweb="textarea"] *,
     input, textarea, select {
-        background-color: #FAF6EE !important;
-        border: 1px solid #E2E8F0 !important;
+        background-color: #FFFFFF !important;
+        border-color: #BAE6FD !important;
         outline: none !important;
         box-shadow: none !important;
         border-radius: 8px !important;
         color: #0F172A !important;
+        fill: #0F172A !important;
+        stroke: #0F172A !important;
         font-weight: 600 !important;
     }
-    
+
+    div[data-baseweb="select"] svg,
+    div[data-baseweb="select"] path,
+    div[data-testid="stSelectbox"] svg,
+    div[data-testid="stSelectbox"] path {
+        fill: #0284C7 !important;
+        stroke: #0284C7 !important;
+        color: #0284C7 !important;
+    }
+
     input:focus, textarea:focus, div[data-baseweb="select"] > div:focus-within {
-        border: 1px solid #CBD5E1 !important;
+        border: 1.5px solid #0284C7 !important;
         outline: none !important;
-        box-shadow: none !important;
+        box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15) !important;
     }
 
     /* Keep Streamlit buttons readable if the deployed theme falls back to defaults. */
@@ -92,14 +110,97 @@ st.markdown("""
         color: #FFFFFF !important;
     }
 
-    div[data-baseweb="popover"], ul[role="listbox"] {
-        background-color: #FAF6EE !important;
-        border: 1px solid #CBD5E1 !important;
-        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12) !important;
-    }
-    li[role="option"] {
+    /* Selectbox Dropdown Menu Popover - Pure White Background & Crisp Text */
+    div[data-baseweb="popover"],
+    div[data-baseweb="popover"] > div,
+    div[data-baseweb="popover"] *,
+    div[data-baseweb="menu"],
+    div[data-baseweb="menu"] *,
+    ul[role="listbox"],
+    ul[role="listbox"] *,
+    div[role="listbox"],
+    div[role="listbox"] *,
+    div[data-testid="stSelectboxVirtualDropdown"],
+    div[data-testid="stSelectboxVirtualDropdown"] *,
+    li[role="option"],
+    li[role="option"] *,
+    div[role="option"],
+    div[role="option"] * {
+        background-color: #FFFFFF !important;
         color: #0F172A !important;
-        background-color: #FAF6EE !important;
+        border-color: #E2E8F0 !important;
+    }
+
+    div[data-baseweb="popover"] {
+        border: 1.5px solid #0284C7 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 8px 24px rgba(2, 132, 199, 0.18) !important;
+        overflow: hidden !important;
+    }
+
+    li[role="option"]:hover,
+    li[role="option"]:hover *,
+    li[role="option"][aria-selected="true"],
+    li[role="option"][aria-selected="true"] *,
+    div[role="option"]:hover,
+    div[role="option"]:hover * {
+        background-color: #E0F2FE !important;
+        color: #0284C7 !important;
+        font-weight: 700 !important;
+    }
+
+    /* Number Input Step Controls (+ and -) - Clean White Buttons */
+    div[data-testid="stNumberInput"],
+    div[data-testid="stNumberInput"] *,
+    button[data-testid="stNumberInputStepDown"],
+    button[data-testid="stNumberInputStepDown"] *,
+    button[data-testid="stNumberInputStepUp"],
+    button[data-testid="stNumberInputStepUp"] *,
+    div[data-testid="stNumberInput"] button,
+    div[data-testid="stNumberInput"] button * {
+        background-color: #FFFFFF !important;
+        color: #0F172A !important;
+        fill: #0F172A !important;
+        stroke: #0F172A !important;
+        border-color: #BAE6FD !important;
+    }
+
+    button[data-testid="stNumberInputStepDown"]:hover,
+    button[data-testid="stNumberInputStepUp"]:hover,
+    div[data-testid="stNumberInput"] button:hover {
+        background-color: #E0F2FE !important;
+        color: #0284C7 !important;
+    }
+
+    /* Checkboxes - Crisp White Background */
+    div[data-testid="stCheckbox"],
+    div[data-testid="stCheckbox"] *,
+    div[data-baseweb="checkbox"],
+    div[data-baseweb="checkbox"] * {
+        color: #0F172A !important;
+    }
+
+    div[data-testid="stCheckbox"] span[role="checkbox"],
+    div[data-baseweb="checkbox"] span {
+        background-color: #FFFFFF !important;
+        border: 2px solid #0284C7 !important;
+        border-radius: 4px !important;
+    }
+
+    div[data-testid="stCheckbox"] span[role="checkbox"][aria-checked="true"],
+    div[data-baseweb="checkbox"] input:checked + span {
+        background-color: #0284C7 !important;
+    }
+
+    /* Dataframe & Tables - Crisp White Background */
+    [data-testid="stDataFrame"],
+    [data-testid="stDataFrame"] > div,
+    [data-testid="stDataFrame"] iframe,
+    [data-testid="glideDataEditor"],
+    div[data-testid="stTable"],
+    table, thead, tbody, tr, th, td {
+        background-color: #FFFFFF !important;
+        color: #0F172A !important;
     }
 
     /* Clean Expander Container */
@@ -333,32 +434,101 @@ st.markdown("""
         box-shadow: 0 6px 16px rgba(2, 132, 199, 0.12);
     }
 
-    /* Navigation Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 6px;
+    /* Navigation Tabs - Distinct Box Outline with Crisp Rounded Borders */
+    div[data-testid="stTabs"],
+    .stTabs {
+        margin-bottom: 16px !important;
+    }
+
+    div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    div[data-testid="stTabs"] [role="tablist"],
+    .stTabs [data-baseweb="tab-list"],
+    [data-baseweb="tab-list"],
+    [role="tablist"] {
+        gap: 8px !important;
         background-color: #E0F2FE !important;
-        padding: 6px;
-        border-radius: 10px;
-        border: 2px solid #0284C7;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background-color: #FFFFFF !important;
-        border: 1px solid #0284C7 !important;
-        border-radius: 8px !important;
-        box-shadow: none !important;
-        color: #0F172A !important;
-        font-weight: 600 !important;
-        padding: 8px 20px;
-    }
-    .stTabs [data-baseweb="tab"]:focus {
-        outline: 2px solid #0284C7 !important;
-        outline-offset: 2px !important;
-    }
-    .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        background-color: #FAF6EE !important;
-        color: #0284C7 !important;
-        font-weight: 800 !important;
+        padding: 8px 10px !important;
+        border-radius: 12px !important;
         border: 2px solid #0284C7 !important;
+    }
+
+    div[data-testid="stTabs"] button,
+    div[data-testid="stTabs"] [data-baseweb="tab"],
+    div[data-testid="stTabs"] button[role="tab"],
+    .stTabs [data-baseweb="tab"],
+    button[data-baseweb="tab"],
+    [data-baseweb="tab-list"] button,
+    [role="tablist"] button,
+    [role="tablist"] [role="tab"],
+    button[role="tab"] {
+        background-color: #FFFFFF !important;
+        border: 2px solid #0284C7 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 4px rgba(2, 132, 199, 0.12) !important;
+        color: #0F172A !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem !important;
+        padding: 8px 18px !important;
+        margin: 2px 4px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    div[data-testid="stTabs"] button *,
+    div[data-testid="stTabs"] [data-baseweb="tab"] *,
+    button[data-baseweb="tab"] *,
+    [role="tablist"] button *,
+    [data-baseweb="tab-list"] button * {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+    }
+
+    div[data-testid="stTabs"] button:hover,
+    div[data-testid="stTabs"] [data-baseweb="tab"]:hover,
+    button[data-baseweb="tab"]:hover,
+    [role="tablist"] button:hover,
+    [data-baseweb="tab-list"] button:hover {
+        background-color: #BAE6FD !important;
+        border: 2px solid #0284C7 !important;
+        color: #0284C7 !important;
+    }
+
+    div[data-testid="stTabs"] button[aria-selected="true"],
+    div[data-testid="stTabs"] [data-baseweb="tab"][aria-selected="true"],
+    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"],
+    .stTabs [data-baseweb="tab"][aria-selected="true"],
+    button[data-baseweb="tab"][aria-selected="true"],
+    [data-baseweb="tab-list"] button[aria-selected="true"],
+    [role="tablist"] button[aria-selected="true"],
+    button[role="tab"][aria-selected="true"] {
+        background-color: #0284C7 !important;
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+        border: 2px solid #0369A1 !important;
+        box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25) !important;
+    }
+
+    div[data-testid="stTabs"] button[aria-selected="true"] *,
+    div[data-testid="stTabs"] [data-baseweb="tab"][aria-selected="true"] *,
+    div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] *,
+    button[data-baseweb="tab"][aria-selected="true"] *,
+    [data-baseweb="tab-list"] button[aria-selected="true"] *,
+    [role="tablist"] button[aria-selected="true"] *,
+    button[role="tab"][aria-selected="true"] * {
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+    }
+
+    /* Remove default Streamlit red underline */
+    div[data-testid="stTabs"] [data-baseweb="tab-highlight"],
+    [data-baseweb="tab-border"],
+    [data-baseweb="tab-highlight"],
+    div[data-testid="stTabs"] hr {
+        display: none !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        border: none !important;
     }
 
     /* PyDeck Map Tooltip - Crisp White Box */
@@ -743,6 +913,15 @@ def record_patient_vital(emergency_id, hr, spo2, sbp, dbp, temp, ecg):
     except Exception:
         return False
 
+def delete_emergency_case(emergency_id):
+    try:
+        r = requests.delete(f"{API_BASE_URL}/emergencies/{emergency_id}")
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
+    return None
+
 # Sidebar Header - Circular Badge Format matching Image 2
 if logo_b64:
     st.sidebar.markdown(f"""
@@ -766,14 +945,17 @@ st.sidebar.divider()
 
 emergencies = fetch_emergencies()
 hospitals = fetch_hospitals()
+ambulances = fetch_ambulances()
 
 active_cases = [e for e in emergencies if e.get("status") in ["REPORTED", "DISPATCHED", "IN_TRANSIT"]]
 case_options = {f"Case #{e['id']}: {e['patient_name']} ({e['emergency_type']}) - Priority: {e['priority']}": e for e in active_cases}
 total_icu = sum(h.get("icu_beds_available", 0) for h in hospitals)
 total_vents = sum(h.get("ventilators_available", 0) for h in hospitals)
+total_amb_avail = sum(1 for a in ambulances if a.get("status") == "AVAILABLE")
 
 st.sidebar.metric("Active Emergencies", len(active_cases))
 st.sidebar.metric("Available ICU Beds", total_icu)
+st.sidebar.metric("Available Ambulances", total_amb_avail)
 st.sidebar.metric("Available Ventilators", total_vents)
 
 st.sidebar.divider()
@@ -873,6 +1055,22 @@ with tab1:
             amb = amb_dict.get(amb_id)
             hosp = hosp_dict.get(hosp_id)
 
+            # If ambulance is not assigned yet (e.g. freshly submitted in Intake Emergency),
+            # dynamically find the nearest available ambulance for live fleet navigation
+            if not amb and ambulances:
+                amb = min(ambulances, key=lambda a: (a["latitude"] - e["location_lat"])**2 + (a["longitude"] - e["location_lon"])**2)
+
+            # If hospital is not assigned yet, dynamically find the top AI recommended or nearest hospital
+            if not hosp and hospitals:
+                try:
+                    recs_e = fetch_recommendations(e["id"])
+                    if recs_e and recs_e[0].get("hospital_id"):
+                        hosp = hosp_dict.get(recs_e[0]["hospital_id"])
+                except Exception:
+                    pass
+                if not hosp:
+                    hosp = min(hospitals, key=lambda h: (h["latitude"] - e["location_lat"])**2 + (h["longitude"] - e["location_lon"])**2)
+
             if amb:
                 # Dispatch Route from Vehicle to Incident Location
                 routes_data.append({
@@ -925,10 +1123,14 @@ with tab1:
             )
             deck_layers.append(marker_layer)
 
+            # Center map on selected patient case if available, else mean of markers
+            c_lat = selected_case["location_lat"] if (active_cases and "selected_case" in locals() and selected_case) else df_map["lat"].mean()
+            c_lon = selected_case["location_lon"] if (active_cases and "selected_case" in locals() and selected_case) else df_map["lon"].mean()
+
             view_state = pdk.ViewState(
-                latitude=df_map["lat"].mean(),
-                longitude=df_map["lon"].mean(),
-                zoom=12.7,
+                latitude=c_lat,
+                longitude=c_lon,
+                zoom=13.0,
                 pitch=20
             )
 
@@ -1128,6 +1330,21 @@ with tab1:
                     st.rerun()
                 except Exception as ex:
                     st.error(f"Manual Allotment error: {ex}")
+
+            st.markdown("<hr style='margin: 12px 0 8px 0; border: none; border-top: 1px dashed #BAE6FD;' />", unsafe_allow_html=True)
+            if st.button(f"🗑️ Delete & Dismiss Case #{selected_case['id']} (Restore Capacity)", key="btn_del_tab1", type="secondary", use_container_width=True):
+                del_res = delete_emergency_case(selected_case['id'])
+                if del_res:
+                    fetch_emergencies.clear()
+                    fetch_hospitals.clear()
+                    fetch_ambulances.clear()
+                    st.session_state.pop("selected_case_id", None)
+                    st.session_state["allotment_counter"] += 1
+                    st.success(f"✅ Case #{selected_case['id']} removed! Availability increased: +1 ICU Bed restored at {del_res.get('restored_hospital', 'Hospital')}.")
+                    time.sleep(1.0)
+                    st.rerun()
+                else:
+                    st.error(f"Failed to delete Case #{selected_case['id']}.")
         else:
             st.info("No active emergency cases currently requiring hospital allotment.")
 
@@ -1275,21 +1492,33 @@ with tab2:
             ))
 
             fig.update_layout(
+                template="plotly_white",
                 paper_bgcolor="#FFFFFF",
                 plot_bgcolor="#FAF6EE",
                 height=380,
-                font=dict(color="#0F172A", family="Inter, sans-serif"),
+                font=dict(color="#000000", family="sans-serif", size=13),
                 hovermode="x unified",
                 legend=dict(
                     orientation="h",
                     yanchor="bottom",
                     y=1.02,
                     xanchor="right",
-                    x=1
+                    x=1,
+                    font=dict(color="#000000", size=12)
                 ),
                 margin=dict(l=20, r=20, t=40, b=20),
-                yaxis=dict(title="Vital Signs Scale (mmHg / BPM)", gridcolor="#E2E8F0"),
-                xaxis=dict(title="Streaming Telemetry Timestamp", gridcolor="#E2E8F0")
+                yaxis=dict(
+                    title="Vital Signs Scale (mmHg / BPM)",
+                    gridcolor="#E2E8F0",
+                    tickfont=dict(color="#000000", size=12),
+                    title_font=dict(color="#000000", size=13)
+                ),
+                xaxis=dict(
+                    title="Streaming Telemetry Timestamp",
+                    gridcolor="#E2E8F0",
+                    tickfont=dict(color="#000000", size=12),
+                    title_font=dict(color="#000000", size=13)
+                )
             )
 
             st.plotly_chart(fig, use_container_width=True)
@@ -1383,7 +1612,14 @@ with tab3:
         h_icu = [h["icu_beds_available"] for h in hospitals]
 
         fig_pie = go.Figure(data=[go.Pie(labels=h_names, values=h_icu, hole=.3, marker_colors=['#0284C7', '#0EA5E9', '#38BDF8', '#7DD3FC'])])
-        fig_pie.update_layout(height=270, margin=dict(l=10, r=10, t=30, b=10), paper_bgcolor="#FAF6EE", font_color="#0F172A")
+        fig_pie.update_layout(
+            template="plotly_white",
+            height=270,
+            margin=dict(l=10, r=10, t=30, b=10),
+            paper_bgcolor="#FAF6EE",
+            font=dict(color="#000000", family="sans-serif", size=13),
+            legend=dict(font=dict(color="#000000", size=12))
+        )
         st.plotly_chart(fig_pie, use_container_width=True)
 
     with c_chart2:
@@ -1396,7 +1632,15 @@ with tab3:
             labels={'x': 'Hospital', 'y': 'Ventilators Ready'},
             color_discrete_sequence=['#0284C7']
         )
-        fig_bar.update_layout(height=270, paper_bgcolor="#FAF6EE", plot_bgcolor="#FFFFFF", font_color="#0F172A")
+        fig_bar.update_layout(
+            template="plotly_white",
+            height=270,
+            paper_bgcolor="#FAF6EE",
+            plot_bgcolor="#FFFFFF",
+            font=dict(color="#000000", family="sans-serif", size=13),
+            xaxis=dict(tickfont=dict(color="#000000", size=12), title_font=dict(color="#000000", size=13)),
+            yaxis=dict(tickfont=dict(color="#000000", size=12), title_font=dict(color="#000000", size=13))
+        )
         st.plotly_chart(fig_bar, use_container_width=True)
 
     st.divider()
@@ -1558,6 +1802,8 @@ with tab4:
                     st.success(f"Emergency incident #{data['id']} ({data['patient_name']}) logged successfully.")
                     st.markdown(f"### AI Triage: **{data['priority']}** ({data['priority_score']}/100) | Severity: **{sev_tag.upper()}**")
                     st.info("Navigate to 'Live Command & GIS Map' tab to confirm hospital allotment & dispatch nearest ambulance.")
+                    time.sleep(1.0)
+                    st.rerun()
                 else:
                     st.error(f"Error submitting intake: {res.text}")
             except Exception as ex:
@@ -1761,6 +2007,31 @@ with tab5:
                             except Exception as ex:
                                 st.error(f"Allotment error: {ex}")
 
+                # 🗑️ Delete Option to Remove Case from History & Increase Availability
+                st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
+                col_d_info, col_d_btn = st.columns([2.5, 1.5])
+                with col_d_info:
+                    st.markdown(
+                        f"<div style='font-size: 0.82rem; color: #64748B; font-weight: 600; padding-top: 6px;'>"
+                        f"🗑️ <b>Delete Case #{case['id']}</b> to permanently remove record and release reserved hospital ICU bed & ambulance."
+                        f"</div>",
+                        unsafe_allow_html=True
+                    )
+                with col_d_btn:
+                    if st.button(f"🗑️ Delete Case #{case['id']}", key=f"btn_del_hist_{case['id']}", type="secondary", use_container_width=True):
+                        del_res = delete_emergency_case(case['id'])
+                        if del_res:
+                            fetch_emergencies.clear()
+                            fetch_hospitals.clear()
+                            fetch_ambulances.clear()
+                            if st.session_state.get("selected_case_id") == case["id"]:
+                                st.session_state.pop("selected_case_id", None)
+                            st.success(f"✅ Case #{case['id']} ({case['patient_name']}) removed! Availability increased: +1 ICU Bed restored at {del_res.get('restored_hospital', 'Hospital')}.")
+                            time.sleep(1.0)
+                            st.rerun()
+                        else:
+                            st.error(f"Failed to delete Case #{case['id']}.")
+
                 st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
 
     with hist_subtab2:
@@ -1803,6 +2074,45 @@ with tab5:
                 mime="text/csv",
                 type="primary"
             )
+
+            # 🗑️ Delete Case from Audit Register
+            st.markdown("<hr style='margin: 18px 0 14px 0; border: none; border-top: 1.5px solid #BAE6FD;' />", unsafe_allow_html=True)
+            st.markdown("##### 🗑️ Remove Incident Record & Increase Availability")
+            st.markdown(
+                "<div style='color: #475569; font-size: 0.85rem; font-weight: 600; margin-bottom: 10px;'>"
+                "Select any emergency incident to permanently delete from audit register. "
+                "Deleting a case immediately increases the count of available hospital ICU beds and releases any active vehicle."
+                "</div>",
+                unsafe_allow_html=True
+            )
+
+            reg_c1, reg_c2 = st.columns([2.5, 1.5])
+            with reg_c1:
+                audit_del_options = {
+                    f"Case #{c['id']}: {c['patient_name']} ({c['emergency_type']}) - {c['status']}": c['id']
+                    for c in filtered_cases
+                }
+                if audit_del_options:
+                    chosen_audit_del = st.selectbox("Select Incident to Delete:", list(audit_del_options.keys()), key="audit_reg_del_select")
+                else:
+                    chosen_audit_del = None
+            with reg_c2:
+                st.write("")
+                st.write("")
+                if chosen_audit_del and st.button("🗑️ Delete Selected Incident", key="btn_del_audit_reg", type="primary", use_container_width=True):
+                    target_id = audit_del_options[chosen_audit_del]
+                    del_res = delete_emergency_case(target_id)
+                    if del_res:
+                        fetch_emergencies.clear()
+                        fetch_hospitals.clear()
+                        fetch_ambulances.clear()
+                        if st.session_state.get("selected_case_id") == target_id:
+                            st.session_state.pop("selected_case_id", None)
+                        st.success(f"✅ Case #{target_id} deleted! Availability increased: +1 ICU Bed restored at {del_res.get('restored_hospital', 'Hospital')}.")
+                        time.sleep(1.0)
+                        st.rerun()
+                    else:
+                        st.error(f"Failed to delete Case #{target_id}.")
         else:
             st.info("No records to display.")
 
@@ -1829,10 +2139,23 @@ with tab5:
                 labels={"Allotted Cases": "Incidents Allotted"}
             )
             fig_h_bar.update_layout(
+                template="plotly_white",
                 paper_bgcolor="#FAF6EE",
                 plot_bgcolor="#FFFFFF",
                 height=320,
-                font_color="#0F172A",
+                font=dict(color="#000000", family="sans-serif", size=13),
+                xaxis=dict(
+                    tickfont=dict(color="#000000", size=12),
+                    title_font=dict(color="#000000", size=13)
+                ),
+                yaxis=dict(
+                    tickfont=dict(color="#000000", size=12),
+                    title_font=dict(color="#000000", size=13)
+                ),
+                coloraxis_colorbar=dict(
+                    tickfont=dict(color="#000000", size=11),
+                    title_font=dict(color="#000000", size=12)
+                ),
                 margin=dict(l=10, r=10, t=30, b=10)
             )
             st.plotly_chart(fig_h_bar, use_container_width=True)
@@ -1853,9 +2176,13 @@ with tab5:
                 color_discrete_sequence=['#EF4444', '#0284C7', '#F59E0B', '#10B981', '#8B5CF6']
             )
             fig_cat_pie.update_layout(
+                template="plotly_white",
                 paper_bgcolor="#FAF6EE",
                 height=320,
-                font_color="#0F172A",
+                font=dict(color="#000000", family="sans-serif", size=13),
+                legend=dict(
+                    font=dict(color="#000000", size=12)
+                ),
                 margin=dict(l=10, r=10, t=30, b=10)
             )
             st.plotly_chart(fig_cat_pie, use_container_width=True)

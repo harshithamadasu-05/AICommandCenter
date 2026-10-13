@@ -113,3 +113,88 @@ def update_emergency_details(emergency_id: int, data: EmergencyUpdate, db: Sessi
     db.commit()
     db.refresh(emg)
     return emg
+
+@router.delete("/{emergency_id}")
+def delete_emergency(emergency_id: int, db: Session = Depends(get_db)):
+    """
+    Delete an emergency case from history, release assigned resources,
+    and increase the availability count of hospital ICU beds and ambulance fleet.
+    """
+    emg = db.query(EmergencyCase).filter(EmergencyCase.id == emergency_id).first()
+    if not emg:
+        raise HTTPException(status_code=404, detail="Emergency case not found")
+
+    restored_hosp_name = None
+    freed_amb_call = None
+
+    # 1. Increase hospital availability (restore ICU bed count)
+    if emg.recommended_hospital_id:
+        hosp = db.query(Hospital).filter(Hospital.id == emg.recommended_hospital_id).first()
+        if hosp:
+            if hosp.icu_beds_available < hosp.icu_beds_total:
+                hosp.icu_beds_available += 1
+            else:
+                hosp.icu_beds_available += 1
+                hosp.icu_beds_total = max(hosp.icu_beds_total, hosp.icu_beds_available)
+            restored_hosp_name = hosp.name
+    else:
+        # If no specific hospital was linked, restore availability in the hospital that has a capacity gap
+        hosp = db.query(Hospital).filter(Hospital.icu_beds_available < Hospital.icu_beds_total).first()
+        if hosp:
+            hosp.icu_beds_available += 1
+            restored_hosp_name = hosp.name
+        else:
+            first_hosp = db.query(Hospital).first()
+            if first_hosp:
+                first_hosp.icu_beds_available += 1
+                first_hosp.icu_beds_total = max(first_hosp.icu_beds_total, first_hosp.icu_beds_available)
+                restored_hosp_name = first_hosp.name
+
+    # 2. Free ambulance and increase vehicle fleet availability
+    if emg.assigned_ambulance_id:
+        amb = db.query(Ambulance).filter(Ambulance.id == emg.assigned_ambulance_id).first()
+        if amb:
+            amb.status = "AVAILABLE"
+            freed_amb_call = amb.call_sign
+    else:
+        amb = db.query(Ambulance).filter(Ambulance.status != "AVAILABLE").first()
+        if amb:
+            amb.status = "AVAILABLE"
+            freed_amb_call = amb.call_sign
+
+    patient_name = emg.patient_name
+    case_id = emg.id
+
+    db.delete(emg)
+    db.commit()
+
+    return {
+        "success": True,
+        "message": f"Incident Case #{case_id} ({patient_name}) removed successfully.",
+        "case_id": case_id,
+        "restored_hospital": restored_hosp_name,
+        "freed_ambulance": freed_amb_call
+    }
+
+@router.delete("/")
+def delete_all_emergencies(resolved_only: bool = False, db: Session = Depends(get_db)):
+    """
+    Batch delete emergency cases from history and restore availability.
+    """
+    query = db.query(EmergencyCase)
+    if resolved_only:
+        query = query.filter(EmergencyCase.status.in_(["RESOLVED", "ARRIVED"]))
+    cases = query.all()
+    count = len(cases)
+    for emg in cases:
+        if emg.recommended_hospital_id:
+            hosp = db.query(Hospital).filter(Hospital.id == emg.recommended_hospital_id).first()
+            if hosp and hosp.icu_beds_available < hosp.icu_beds_total:
+                hosp.icu_beds_available += 1
+        if emg.assigned_ambulance_id:
+            amb = db.query(Ambulance).filter(Ambulance.id == emg.assigned_ambulance_id).first()
+            if amb:
+                amb.status = "AVAILABLE"
+        db.delete(emg)
+    db.commit()
+    return {"success": True, "deleted_count": count}
